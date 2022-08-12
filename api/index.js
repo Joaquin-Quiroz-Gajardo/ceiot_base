@@ -175,13 +175,14 @@ app.get('/admin/:command', function(req,res) {
     res.send(render(template,{msg:msg}));
 });	
 
-
+var past = Date.now()
 startDatabase().then(async() => {
     await insertMeasurement({id:'00', t:'18', h:'78'});
     await insertMeasurement({id:'00', t:'19', h:'77'});
     await insertMeasurement({id:'00', t:'17', h:'77'});
     await insertMeasurement({id:'01', t:'17', h:'77'});
     console.log("mongo measurement database Up");
+    console.log("database start in " + (Date.now()-past)/1000 + " seconds");
 
     db.public.none("CREATE TABLE devices (device_id VARCHAR, name VARCHAR, key VARCHAR)");
     db.public.none("INSERT INTO devices VALUES ('00', 'Fake Device 00', '123456')");
