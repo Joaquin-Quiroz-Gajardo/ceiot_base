@@ -32,7 +32,11 @@ async function getMeasurements() {
     return await database.collection(collectionName).find({}).toArray();	
 }
 
+var morgan = require("morgan");
+
 const app = express();
+
+app.use(morgan("dev"));
 
 app.use(bodyParser.urlencoded({extended:false}));
 
@@ -42,7 +46,7 @@ app.use('/js', express.static('spa'));
 const PORT = 8080;
 
 app.post('/measurement', function (req, res) {
-	var d = new Date(Date.now())
+	var d = new Date(Date.now());
 -       console.log("device id    : " + req.body.id + " key         : " + req.body.key + " temperature : " + req.body.t + " humidity    : " + req.body.h + "timestamp :" + d.toString());	
     const {insertedId} = insertMeasurement({id:req.body.id, t:req.body.t, h:req.body.h, ts:d.toString()});
 	res.send("received measurement into " +  insertedId);
